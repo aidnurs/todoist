@@ -1,5 +1,7 @@
 <template lang="html">
-  <li><slot></slot></li>
+  <div class="">
+    <button type="button" name="button">x</button>
+  </div>
 </template>
 
 <script>

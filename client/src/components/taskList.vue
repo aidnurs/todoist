@@ -1,8 +1,7 @@
 <template lang="html">
   <div>
-    <ul>
-      <task v-for="todo in todos" v-text="todo.task"></task>
-    </ul>
+    <!--<task v-for="todo in todos" v-text="todo.task"></task>-->
+    <task></task>
     <form method="post">
       <input v-model="todos.task">
     </form>
