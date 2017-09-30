@@ -17,7 +17,7 @@ export default {
   components: { task },
   data() {
     return {
-      todos:[]
+      todos: []
     };
   },
   mounted: function() {
@@ -25,9 +25,6 @@ export default {
     $.get('http://localhost:8000/api/get', function(data) {
       _this.todos = data;
     });
-  },
-  beforeMount(){
-    console.log(111);
   },
   methods: {
     addTask() {
