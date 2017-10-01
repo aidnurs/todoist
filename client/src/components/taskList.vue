@@ -1,11 +1,19 @@
 <template lang="html">
-  <div>
-    <task v-for="todo in todos" v-text="todo.task"></task>
-    <form method="post">
-      <input v-model="newTask">
-    </form>
-    <button @click="addTask">add Task</button>
-    <button @click="deleteTask">delete Task</button>
+  <div id="todo-list-example">
+    <input
+      v-model="newTodoText"
+      v-on:keyup.enter="addNewTodo"
+      placeholder="Add a todo"
+    >
+    <ul>
+      <li
+        is="task"
+        v-for="(todo, index) in todos"
+
+        v-bind:title="todo.task"
+        v-on:remove=""
+      ></li>
+    </ul>
   </div>
 </template>
 
@@ -15,8 +23,9 @@ export default {
   components: { task },
   data() {
     return {
-      newTask: '',
-      todos: []
+      newTodoText: '',
+      todos: [],
+      //nextTodoId: 4
     };
   },
   mounted: function() {
@@ -26,11 +35,25 @@ export default {
     });
   },
   methods: {
+    addNewTodo() {
+      this.todos.push({
+        task: this.newTodoText
+      });
+      $.ajax({
+        url: 'http://localhost:8000/api/post',
+        type: 'POST',
+        data: { input: this.newTodoText },
+        success: function(result) {
+          console.log(result);
+        }
+      });
+      this.newTodoText = '';
+    },
     addTask() {
       $.ajax({
         url: 'http://localhost:8000/api/post',
         type: 'POST',
-        data: { input: this.newTask },
+        data: { input: this.newTodoText },
         success: function(result) {
           console.log(result);
         }
@@ -53,4 +76,7 @@ export default {
 </script>
 
 <style lang="css">
+  body{
+    padding: 50px;
+  }
 </style>

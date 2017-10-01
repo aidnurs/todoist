@@ -1,15 +1,16 @@
 <template lang="html">
-  <div>
-
-  </div>
+  <li>
+    {{title}}
+    <button v-on:click="$emit('remove')">X</button>
+  </li>
 </template>
 
 <script>
 export default {
-  created:function () {
-  }
+  props:['title'],
 };
 </script>
 
 <style lang="css">
+
 </style>
