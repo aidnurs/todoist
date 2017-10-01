@@ -56,12 +56,11 @@ export default {
           console.log(result);
         }
       });
-
     }
   },
-  created(){
-    Event.$on('remove',(todoText,index)=>{
-      this.todos.splice(index, 1)
+  created() {
+    Event.$on('remove', (todoText, index) => {
+      this.todos.splice(index, 1);
       $.ajax({
         url: 'http://localhost:8000/api/delete',
         type: 'DELETE',
@@ -70,7 +69,18 @@ export default {
           console.log(result);
         }
       });
-    })
+    });
+    Event.$on('submit', (str, index) => {
+      this.todos[index].task = str;
+      $.ajax({
+        url: 'http://localhost:8000/api/put',
+        type: 'PUT',
+        data: { id: this.todos[index]._id, input: str },
+        success: function(result) {
+          console.log(result);
+        }
+      });
+    });
   }
 };
 </script>
