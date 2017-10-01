@@ -9,9 +9,8 @@
       <li
         is="task"
         v-for="(todo, index) in todos"
-
         v-bind:title="todo.task"
-        v-on:remove=""
+        v-bind:index="index"
       ></li>
     </ul>
   </div>
@@ -24,8 +23,7 @@ export default {
   data() {
     return {
       newTodoText: '',
-      todos: [],
-      //nextTodoId: 4
+      todos: []
     };
   },
   mounted: function() {
@@ -49,18 +47,7 @@ export default {
       });
       this.newTodoText = '';
     },
-    addTask() {
-      $.ajax({
-        url: 'http://localhost:8000/api/post',
-        type: 'POST',
-        data: { input: this.newTodoText },
-        success: function(result) {
-          console.log(result);
-        }
-      });
-      this.newTask = '';
-    },
-    deleteTask() {
+    deleteTodo() {
       $.ajax({
         url: 'http://localhost:8000/api/delete',
         type: 'DELETE',
@@ -69,8 +56,21 @@ export default {
           console.log(result);
         }
       });
-      this.newTask = '';
+
     }
+  },
+  created(){
+    Event.$on('remove',(todoText,index)=>{
+      this.todos.splice(index, 1)
+      $.ajax({
+        url: 'http://localhost:8000/api/delete',
+        type: 'DELETE',
+        data: { input: todoText },
+        success: function(result) {
+          console.log(result);
+        }
+      });
+    })
   }
 };
 </script>

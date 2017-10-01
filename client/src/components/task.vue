@@ -1,13 +1,18 @@
 <template lang="html">
   <li>
     {{title}}
-    <button v-on:click="$emit('remove')">X</button>
+    <button v-on:click="remove">X</button>
   </li>
 </template>
 
 <script>
 export default {
-  props:['title'],
+  props: ['title','index'],
+  methods: {
+    remove() {
+      Event.$emit('remove', this.title,this.index);
+    }
+  }
 };
 </script>
 
