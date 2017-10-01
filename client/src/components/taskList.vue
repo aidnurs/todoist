@@ -2,7 +2,7 @@
   <div>
     <task v-for="todo in todos" v-text="todo.task"></task>
     <form method="post">
-      <input v-model="todos.task">
+      <input v-model="newTask">
     </form>
     <button @click="addTask">add Task</button>
     <button @click="deleteTask">delete Task</button>
@@ -15,6 +15,7 @@ export default {
   components: { task },
   data() {
     return {
+      newTask: '',
       todos: []
     };
   },
@@ -29,21 +30,23 @@ export default {
       $.ajax({
         url: 'http://localhost:8000/api/post',
         type: 'POST',
-        data: { input: this.todos.task },
+        data: { input: this.newTask },
         success: function(result) {
           console.log(result);
         }
       });
+      this.newTask = '';
     },
     deleteTask() {
       $.ajax({
         url: 'http://localhost:8000/api/delete',
         type: 'DELETE',
-        data: { input: this.todos.task },
+        data: { input: this.newTask },
         success: function(result) {
           console.log(result);
         }
       });
+      this.newTask = '';
     }
   }
 };

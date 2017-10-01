@@ -3,6 +3,7 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var shortid = require('shortid');
+//var todos = require('./todos');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,6 +20,15 @@ app.use(function(req, res, next) {
 var url = 'mongodb://test:test@ds151554.mlab.com:51554/todoist';
 mongoose.connect(url);
 
+/*app.post('/api', (req, res) => {
+    console.log(req.body);
+    res.send('OK');
+});
+
+app.get('/api/todos', todos.todos);
+app.post('/api/todos/add', todos.add);
+
+*/
 app.get('/api/get', function(req, res) {
   Todo.find({}, function(err, todos) {
     res.send(todos);
