@@ -15,4 +15,8 @@ export default {
 </script>
 
 <style lang="css">
+html{
+  background-color: #FFFB00;
+  font-size: 20px;
+}
 </style>

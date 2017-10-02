@@ -42,4 +42,7 @@ export default {
     display: inline-block;
     white-space: nowrap;
   }
+  button{
+    
+  }
 </style>
