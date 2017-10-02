@@ -1,5 +1,5 @@
 <template lang="html">
-  <div id="todo-list-example">
+  <div id="todo-list-example" >
     <input
       v-model="newTodoText"
       v-on:keyup.enter="addNewTodo"
@@ -86,7 +86,5 @@ export default {
 </script>
 
 <style lang="css">
-  body{
-    padding: 50px;
-  }
+
 </style>
