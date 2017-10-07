@@ -3,6 +3,8 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var shortid = require('shortid');
+var routes = require('./routes.js');
+
 //var todos = require('./todos');
 
 app.use(bodyParser.json());
@@ -20,16 +22,9 @@ app.use(function(req, res, next) {
 var url = 'mongodb://test:test@ds151554.mlab.com:51554/todoist';
 mongoose.connect(url);
 
-/*app.post('/api', (req, res) => {
-    console.log(req.body);
-    res.send('OK');
-});
+routes(app);
 
-app.get('/api/todos', todos.todos);
-app.post('/api/todos/add', todos.add);
-
-*/
-app.get('/api/get', function(req, res) {
+/*app.get('/api/get', function(req, res) {
   Todo.find({}, function(err, todos) {
     res.send(todos);
   });
@@ -62,7 +57,7 @@ var todoSchema = mongoose.Schema({
   task: String
 });
 
-var Todo = mongoose.model('Todo', todoSchema);
+var Todo = mongoose.model('Todo', todoSchema);*/
 
 var listener = app.listen(8000, function() {
   console.log('Your app is listening on port ' + listener.address().port);

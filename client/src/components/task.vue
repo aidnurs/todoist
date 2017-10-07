@@ -1,6 +1,6 @@
 <template lang="html">
   <li>
-    <input type="checkbox">
+    <input type="checkbox" v-model="done">
     <div v-if="show" v-on:dblclick="edit">
       {{title}}
     </div>
@@ -14,6 +14,10 @@ export default {
   props: ['title', 'index'],
   data() {
     return {
+      doneClass:{
+        fontSize:'50px'
+      },
+      done:false,
       str: this.title,
       show: true,
       showInput: false
@@ -43,6 +47,6 @@ export default {
     white-space: nowrap;
   }
   button{
-    
+
   }
 </style>

@@ -1,5 +1,18 @@
 <template lang="html">
   <div id="todo-list-example">
+    <form>
+      <input
+        v-model="newTodoText"
+        v-on:keyup.enter="addNewTodo"
+        placeholder="Login"
+      >
+      <input
+        v-model="newTodoText"
+        v-on:keyup.enter="addNewTodo"
+        placeholder="Password"
+      >
+    </form>
+    <br>
     <input
       v-model="newTodoText"
       v-on:keyup.enter="addNewTodo"
