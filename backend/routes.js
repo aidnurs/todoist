@@ -1,5 +1,4 @@
 'use strict';
-var User = require('./models/User.js');
 var Todo = require('./models/Todo.js');
 
 module.exports = function(app) {
@@ -9,13 +8,25 @@ module.exports = function(app) {
     });
   });
 
+  app.route('/api/get/more').get(function(req, res) {
+    Todo.find({user:'aidnurs'}, function(err, todos) {
+      res.send(todos);
+    });
+  });
+
   app.route('/api/post').post(function(req, res) {
     var input = req.body.input;
+    var login = req.body.login;
     var tmrw = new Todo({
+      user: login,
       task: input
     });
-    tmrw.save(function(err, tmrw) {});
-    res.sendStatus(200);
+    tmrw.save(function(err, tmrw) {
+      if (err) {
+        throw err;
+      }
+    });
+    res.send(tmrw);
   });
 
   app.route('/api/put').put(function(req, res) {

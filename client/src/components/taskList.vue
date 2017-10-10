@@ -2,15 +2,10 @@
   <div id="todo-list-example">
     <form>
       <input
-        v-model="newTodoText"
-        v-on:keyup.enter="addNewTodo"
-        placeholder="Login"
+        v-model="username"
+        placeholder="username"
       >
-      <input
-        v-model="newTodoText"
-        v-on:keyup.enter="addNewTodo"
-        placeholder="Password"
-      >
+      <button @click="logIn">login</button>
     </form>
     <br>
     <input
@@ -35,6 +30,7 @@ export default {
   components: { task },
   data() {
     return {
+      username: '',
       newTodoText: '',
       todos: []
     };
@@ -43,9 +39,13 @@ export default {
     var _this = this;
     $.get('http://localhost:8000/api/get', function(data) {
       _this.todos = data;
+      console.log(data);
     });
   },
   methods: {
+    logIn(){
+      this.showUsername=true;
+    },
     addNewTodo() {
       this.todos.push({
         task: this.newTodoText
@@ -53,7 +53,7 @@ export default {
       $.ajax({
         url: 'http://localhost:8000/api/post',
         type: 'POST',
-        data: { input: this.newTodoText },
+        data: { login: this.username, input: this.newTodoText },
         success: function(result) {
           console.log(result);
         }

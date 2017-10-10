@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var todoSchema = mongoose.Schema({
-  task: String,
+  user: String,
+  task: String
 });
 
 var Todo = mongoose.model('Todo', todoSchema);
