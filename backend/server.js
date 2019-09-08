@@ -1,27 +1,49 @@
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-var shortid = require('shortid');
-var routes = require('./routes.js');
+'use strict';
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
+const express = require('express');
+const app = express();
+require('dotenv').config();
+
+require('mongodb');
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
+
+// app.use((req, res, next) => {
+//     next();
+// });
+
+const Schema = mongoose.Schema;
+
+const TodoSchema = new Schema({
+    task: String,
+    done: Boolean,
 });
 
-var url = 'mongodb://test:test@ds151554.mlab.com:51554/todoist';
-mongoose.connect(url);
+const Todo = mongoose.model('Todo', TodoSchema);
 
-routes(app);
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 
-var listener = app.listen(8000, function() {
-  console.log('Your app is listening on port ' + listener.address().port);
+app.get('/todos', (req, res) => {
+    Todo.find({}, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        res.send(data);
+    });
+});
+
+app.post('/todo', (req, res) => {
+    Todo.find({}, (err, data) => {
+        if (err) {
+            throw err;
+        }
+        res.send(data);
+    });
+});
+
+var listener = app.listen(process.env.PORT || 3000, function() {
+    console.log('App is listening on port ' + listener.address().port);
 });
