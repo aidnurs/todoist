@@ -39,11 +39,11 @@ export default Vue.extend({
             console.log(typeof test);
             axios
                 .post(
-                    process.env.VUE_APP_BACKEND + '/todo',
-                    JSON.stringify({
+                    process.env.VUE_APP_BACKEND + '/api/todos',
+                    {
                         task: this.todo.task,
                         status: false,
-                    }),
+                    },
                     {
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
@@ -56,7 +56,7 @@ export default Vue.extend({
         },
         getTodos() {
             axios
-                .get(process.env.VUE_APP_BACKEND + '/todos')
+                .get(process.env.VUE_APP_BACKEND + '/api/todos')
                 .then((res) => {
                     this.todos = res.data;
                 })
