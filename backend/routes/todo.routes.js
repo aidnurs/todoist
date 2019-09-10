@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
     });
     todo.save((err, data) => {
         if (err) {
-            return res.status(400).send(error.details[0].message);
+            return res.status(400).send(err);
         }
         res.json(data);
     });

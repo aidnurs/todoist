@@ -1,6 +1,7 @@
 <template>
     <div class="home">
         <img alt="Vue logo" src="../assets/logo.png" />
+        <button type="button" name="button" @click="deleteAllTodos">delete all</button>
         <ul>
             <li v-for="todo in this.todos">
                 <p>
@@ -17,6 +18,7 @@
 import Vue from 'vue';
 // import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import axios from 'axios';
+var querystring = require('querystring');
 
 export default Vue.extend({
     name: 'home',
@@ -32,24 +34,17 @@ export default Vue.extend({
     },
     methods: {
         addTodo() {
-            let test = JSON.stringify({
+            let test = querystring.stringify({
                 task: this.todo.task,
                 status: false,
             });
             console.log(typeof test);
             axios
-                .post(
-                    process.env.VUE_APP_BACKEND + '/api/todos',
-                    {
-                        task: this.todo.task,
-                        status: false,
+                .post(process.env.VUE_APP_BACKEND + '/api/todos', test, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    {
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                    },
-                )
+                })
                 .then(() => {
                     this.getTodos();
                 });
@@ -63,6 +58,11 @@ export default Vue.extend({
                 .catch((err) => {
                     throw err;
                 });
+        },
+        deleteAllTodos() {
+            axios.delete(process.env.VUE_APP_BACKEND + '/api/todos').then(() => {
+                this.getTodos();
+            });
         },
     },
     mounted() {
