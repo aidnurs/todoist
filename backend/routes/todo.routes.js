@@ -22,6 +22,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
     const todo = new Todo({
+        userId: req.body.userId,
         task: req.body.task,
         status: req.body.status,
     });
