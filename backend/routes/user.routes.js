@@ -3,12 +3,14 @@ const router = express.Router();
 const User = require('../models/user.model');
 
 router.get('/', (req, res) => {
-    User.find({}, (err, data) => {
-        if (err) {
-            return res.status(400).send(error.details[0].message);
-        }
-        res.json(data);
-    });
+    User.find({})
+        .populate('todos')
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).send(error.details[0].message);
+            }
+            res.json(data);
+        });
 });
 
 router.post('/', (req, res) => {

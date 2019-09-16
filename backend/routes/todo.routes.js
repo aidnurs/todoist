@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Todo = require('../models/todo.model');
+const User = require('../models/user.model');
 
 router.get('/', (req, res) => {
     Todo.find({}, (err, data) => {
@@ -21,16 +22,19 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const todo = new Todo({
-        userId: req.body.userId,
-        task: req.body.task,
-        status: req.body.status,
-    });
-    todo.save((err, data) => {
+    User.findOne({ _id: req.body.userId }, (err, user) => {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json(data);
+        const todo = new Todo({
+            userId: req.body.userId,
+            task: req.body.task,
+            status: req.body.status,
+        });
+        todo.save();
+        user.todos.push(todo);
+        user.save();
+        res.json(todo);
     });
 });
 
