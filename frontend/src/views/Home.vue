@@ -1,41 +1,23 @@
 <template>
     <div class="home">
-        <form class="" action="" method="post">
-            <label for="username" required>username</label>
-            <input type="text" name="username" value="" />
-            <br />
-            <label for="password" required>password</label>
-            <input type="password" name="password" value="" />
-            <br />
-            <button type="submit" name="button">Login</button>
-        </form>
-
-        <form @submit.prevent="registerNewUser" class="" method="post">
-            <label for="username" required>username</label>
-            <input type="text" name="username" value="" v-model="user.username" />
-            <br />
-            <button type="submit" name="button">Register</button>
-        </form>
-
-        <img alt="Vue logo" src="../assets/logo.png" />
-        <div class="">
-            <button type="button" name="button" @click="deleteAllTodos">delete all</button>
-        </div>
-        <ul>
-            <li v-for="todo in this.todos">
-                <p>
-                    {{ todo.task }}
-                </p>
-                <!--<input type="checkbox" name="" value="" />-->
-            </li>
-        </ul>
-        <input type="text" name="" value="" v-model="todo.task" @keyup.enter="addTodo" />
+        <b-container>
+            <div class="">
+                <button type="button" name="button" @click="deleteAllTodos">delete all</button>
+            </div>
+            <ul>
+                <li v-for="todo in this.todos">
+                    <p>
+                        {{ todo.task }}
+                    </p>
+                </li>
+            </ul>
+            <input type="text" name="" value="" v-model="todo.task" @keyup.enter="addTodo" />
+        </b-container>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-// import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import axios from 'axios';
 var querystring = require('querystring');
 
@@ -55,22 +37,6 @@ export default Vue.extend({
         };
     },
     methods: {
-        registerNewUser() {
-            var data = querystring.stringify(this.user);
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.addEventListener('readystatechange', function() {
-                if (this.readyState === 4) {
-                    console.log(this.responseText);
-                }
-            });
-
-            xhr.open('POST', 'http://localhost:45105/api/users');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            xhr.send(data);
-        },
         addTodo() {
             let test = querystring.stringify({
                 task: this.todo.task,
