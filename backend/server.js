@@ -10,9 +10,13 @@ const todoRoutes = require('./routes/todo.routes');
 const userRoutes = require('./routes/user.routes');
 const Todo = require('./models/todo.model');
 const User = require('./models/user.model');
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local');
-// const session = require('express-session');
+const config = require("config");
+
+//use config module to get the privatekey, if no private key set, end the application
+if (!config.get('myprivatekey')) {
+    console.error('FATAL ERROR: myprivatekey is not defined.');
+    process.exit(1);
+}
 
 /**
  * CORS
