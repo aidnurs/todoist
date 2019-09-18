@@ -1,18 +1,45 @@
 <template>
     <div class="home">
-        <b-container>
-            <div class="">
-                <button type="button" name="button" @click="deleteAllTodos">delete all</button>
-            </div>
-            <ul>
-                <li v-for="todo in this.todos">
-                    <p>
-                        {{ todo.task }}
-                    </p>
-                </li>
-            </ul>
-            <input type="text" name="" value="" v-model="todo.task" @keyup.enter="addTodo" />
-        </b-container>
+        <ul>
+            <li>
+                <input type="checkbox" name="" value="" />
+                <span>
+                    task1
+                </span>
+            </li>
+            <hr />
+            <li>
+                <input type="checkbox" name="" value="" />
+                <span>
+                    task1
+                </span>
+            </li>
+            <hr />
+        </ul>
+        <ul>
+            <li v-for="todo in this.todos">
+                <p>
+                    {{ todo.task }}
+                </p>
+            </li>
+        </ul>
+
+        <input
+            type="text"
+            name=""
+            value=""
+            v-model="todo.task"
+            @keyup.enter="addTodo"
+            placeholder="add todo"
+        />
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="">
+            <button type="button" name="button" @click="deleteAllTodos">delete all</button>
+        </div>
     </div>
 </template>
 
@@ -31,9 +58,6 @@ export default Vue.extend({
                 status: false,
             },
             todos: [] as Object[],
-            user: {
-                username: '',
-            },
         };
     },
     methods: {
