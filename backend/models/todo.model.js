@@ -14,6 +14,23 @@ const TodoSchema = new Schema({
     status: Boolean,
 });
 
+/**
+ * @swagger
+ *
+ * definitions:
+ *   Todo:
+ *     type: object
+ *     required:
+ *       - username
+ *       - password
+ *     properties:
+ *       username:
+ *         type: string
+ *       password:
+ *         type: string
+ *         format: password
+ */
+
 const Todo = mongoose.model('Todo', TodoSchema);
 
 module.exports = Todo;

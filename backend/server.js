@@ -12,6 +12,7 @@ const Todo = require('./models/todo.model');
 const User = require('./models/user.model');
 const config = require('config');
 const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 //use config module to get the privatekey, if no private key set, end the application
 if (!config.get('myprivatekey')) {
@@ -42,20 +43,10 @@ const swaggerDefinition = {
 };
 const options = {
     swaggerDefinition,
-    apis: ['./routes/*','./models/*'],
+    apis: ['./routes/*', './models/*'],
 };
 const swaggerSpec = swaggerJSDoc(options);
-
-// -- routes for docs and generated swagger spec --
-
-app.get('/docs/json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerSpec);
-});
-
-app.get('/docs', (req, res) => {
-    res.sendFile(process.cwd() + '/public/docs.html');
-});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /**
  * Connect to database
