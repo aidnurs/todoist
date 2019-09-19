@@ -10,7 +10,8 @@ const todoRoutes = require('./routes/todo.routes');
 const userRoutes = require('./routes/user.routes');
 const Todo = require('./models/todo.model');
 const User = require('./models/user.model');
-const config = require("config");
+const config = require('config');
+const swaggerJSDoc = require('swagger-jsdoc');
 
 //use config module to get the privatekey, if no private key set, end the application
 if (!config.get('myprivatekey')) {
@@ -30,6 +31,31 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+const swaggerDefinition = {
+    info: {
+        title: 'Todoist',
+        version: '1.0.0',
+        description: 'Simple Todoist App',
+    },
+    basePath: '/',
+};
+const options = {
+    swaggerDefinition,
+    apis: ['./routes/*','./models/*'],
+};
+const swaggerSpec = swaggerJSDoc(options);
+
+// -- routes for docs and generated swagger spec --
+
+app.get('/docs/json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
+app.get('/docs', (req, res) => {
+    res.sendFile(process.cwd() + '/public/docs.html');
+});
 
 /**
  * Connect to database
