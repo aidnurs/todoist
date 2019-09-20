@@ -4,6 +4,27 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
+/**
+ * @swagger
+ *
+ * definitions:
+ *   User:
+ *     type: object
+ *     required:
+ *       - username
+ *       - password
+ *     properties:
+ *       username:
+ *         type: string
+ *       password:
+ *         type: string
+ *         format: password
+ *       todos:
+ *          type: array
+ *          items:
+ *              $ref:"#/definitions/Todo"
+ */
+
 const UserSchema = new Schema({
     username: {
         type: String,

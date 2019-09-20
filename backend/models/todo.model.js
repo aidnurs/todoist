@@ -1,6 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+/**
+ * @swagger
+ *
+ * definitions:
+ *   Todo:
+ *     type: object
+ *     required:
+ *       - userId
+ *       - task
+ *     properties:
+ *       userId:
+ *          $ref: "#/definitions/User"
+ *       task:
+ *          type: string
+ *       status:
+ *          type: boolean
+ */
+
 const TodoSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -13,23 +31,6 @@ const TodoSchema = new Schema({
     },
     status: Boolean,
 });
-
-/**
- * @swagger
- *
- * definitions:
- *   Todo:
- *     type: object
- *     required:
- *       - username
- *       - password
- *     properties:
- *       username:
- *         type: string
- *       password:
- *         type: string
- *         format: password
- */
 
 const Todo = mongoose.model('Todo', TodoSchema);
 

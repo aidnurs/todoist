@@ -17,7 +17,7 @@ router.get('/', auth, (req, res) => {
         });
 });
 
-router.get('/current', auth, (req, res) => {
+router.get('/me', auth, (req, res) => {
     User.findById(req.user._id)
         .select('-password')
         .exec((err, user) => {

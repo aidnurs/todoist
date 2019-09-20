@@ -21,7 +21,6 @@ router.use(auth);
  *           items:
  *              $ref: '#/definitions/Todo'
  */
-
 router.get('/', (req, res) => {
     User.findOne({ _id: req.user._id })
         .populate('todos')
