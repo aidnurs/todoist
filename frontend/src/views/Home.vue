@@ -79,7 +79,11 @@ export default Vue.extend({
         },
         getTodos() {
             axios
-                .get(process.env.VUE_APP_BACKEND + '/api/todos')
+                .get(process.env.VUE_APP_BACKEND + '/api/todos', {
+                    headers: {
+                        'x-access-token': localStorage.getItem('todoist-token'),
+                    },
+                })
                 .then((res) => {
                     this.todos = res.data;
                 })

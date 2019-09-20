@@ -12,6 +12,9 @@ import Vue from 'vue';
 import Navbar from '@/components/Navbar.vue';
 export default Vue.extend({
     components: { Navbar },
+    mounted() {
+        this.$store.dispatch('USER_REQUEST');
+    },
 });
 </script>
 

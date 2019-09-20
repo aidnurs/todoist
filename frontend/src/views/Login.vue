@@ -22,7 +22,10 @@
 
             <b-button type="submit" variant="primary">Save</b-button>
         </b-form>
-
+        <div class="">
+            {{ this.$store.state.login.token }}
+        </div>
+        <button type="button" name="button" @click="logout">logout</button>
         <!-- <form @submit.prevent="registerNewUser" class="" method="post">
             <label for="username" required>username</label>
             <input type="text" name="username" value="" v-model="user.username" />
@@ -65,6 +68,9 @@ export default Vue.extend({
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
             xhr.send(data);
+        },
+        logout() {
+            this.$store.dispatch('AUTH_LOGOUT');
         },
     },
     mounted() {

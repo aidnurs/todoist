@@ -1,56 +1,43 @@
 import querystring from 'querystring';
+import Vue from 'vue';
 
 export default {
     state: {
-        token: localStorage.getItem('todoist-token') || '',
         status: '',
-        hasLoadedOnce: false,
+        profile: {},
     },
     mutations: {
-        AUTH_REQUEST(state: any) {
+        USER_REQUEST(state: any) {
             state.status = 'loading';
         },
-        AUTH_SUCCESS(state: any, token: string) {
+        USER_SUCCESS(state: any, resp: any) {
             state.status = 'success';
-            state.token = token;
-            state.hasLoadedOnce = true;
+            Vue.set(state, 'profile', resp);
         },
-        AUTH_ERROR(state: any) {
+        USER_ERROR(state: any) {
             state.status = 'error';
-            state.hasLoadedOnce = true;
-        },
-        AUTH_LOGOUT(state: any) {
-            state.token = '';
         },
     },
     actions: {
-        AUTH_REQUEST({ commit, dispatch }: any, user: any) {
-            return new Promise((resolve, reject) => {
-                // The Promise used for router redirect in login
-                commit('AUTH_REQUEST');
+        USER_REQUEST({ commit, dispatch }: any) {
+            commit('USER_REQUEST');
 
-                const data = querystring.stringify(user);
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                commit('USER_SUCCESS');
+                console.log(xhr.response);
+            };
 
-                const xhr = new XMLHttpRequest();
-                xhr.onload = () => {
-                    const resp = JSON.parse(xhr.response);
-                    localStorage.setItem('todoist-token', resp.token); // store the token in localstorage
-                    commit('AUTH_SUCCESS', resp.token);
-                    resolve(resp.token);
-                };
+            xhr.onerror = () => {
+                commit('USER_ERROR');
+                // dispatch('AUTH_LOGOUT');
+            };
+            xhr.open('GET', process.env.VUE_APP_BACKEND + '/api/users/me');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('x-access-token', localStorage.getItem('todoist-token') as string);
 
-                xhr.onerror = () => {
-                    reject();
-                };
-
-                xhr.open('POST', process.env.VUE_APP_BACKEND + '/api/users/login');
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                xhr.send(data);
-            });
+            xhr.send();
         },
     },
-    getters: {
-        isAuthenticated: (state: any) => !!state.token,
-    },
+    getters: {},
 };
