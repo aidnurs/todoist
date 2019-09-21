@@ -47,7 +47,9 @@ const UserSchema = new Schema({
 //custom method to generate authToken
 UserSchema.methods.generateAuthToken = function() {
     //get the private key from the config file -> environment variable
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey'));
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('myprivatekey'), {
+        expiresIn: '1h',
+    });
     return token;
 };
 

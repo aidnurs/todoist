@@ -73,10 +73,7 @@ router.post('/login', (req, res) => {
                     message: 'Incorrect username or password',
                 });
             } else {
-                const token = jwt.sign(
-                    { _id: user._id, isAdmin: user.isAdmin },
-                    config.get('myprivatekey'),
-                );
+                const token = user.generateAuthToken();
                 res.json({
                     success: true,
                     message: 'Authentication successful!',
