@@ -1,6 +1,12 @@
 <template lang="html">
     <div class="">
-        <b-form inline class="justify-content-center" @submit.prevent="onSubmit">
+        <br />
+        <b-form
+            inline
+            class="justify-content-center"
+            @submit.prevent="onSubmit"
+            v-if="!this.$store.getters.isAuthenticated"
+        >
             <label class="sr-only" for="inline-form-input-name">Name</label>
             <b-input
                 id="inline-form-input-name"
@@ -20,12 +26,19 @@
 
             <!-- <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0">Remember me</b-form-checkbox> -->
 
-            <b-button type="submit" variant="primary">Save</b-button>
+            <b-button type="submit" variant="primary">Login</b-button>
         </b-form>
         <div class="">
             {{ this.$store.state.login.token }}
         </div>
-        <button type="button" name="button" @click="logout">logout</button>
+        <button
+            type="button"
+            name="button"
+            @click="logout"
+            v-if="this.$store.getters.isAuthenticated"
+        >
+            logout
+        </button>
         <!-- <form @submit.prevent="registerNewUser" class="" method="post">
             <label for="username" required>username</label>
             <input type="text" name="username" value="" v-model="user.username" />
@@ -38,7 +51,7 @@
 <script>
 import Vue from 'vue';
 import axios from 'axios';
-var querystring = require('querystring');
+import querystring from 'querystring';
 
 export default Vue.extend({
     data() {
@@ -54,28 +67,25 @@ export default Vue.extend({
             this.$store.dispatch('AUTH_REQUEST', this.user);
         },
         registerNewUser() {
-            var data = querystring.stringify(this.user);
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.addEventListener('readystatechange', function() {
-                if (this.readyState === 4) {
-                    console.log(this.responseText);
-                }
-            });
-
-            xhr.open('POST', process.env.VUE_APP_BACKEND + '/api/users');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-            xhr.send(data);
+            const data = querystring.stringify(this.user);
+            axios
+                .post(process.env.VUE_APP_BACKEND + '/api/users', data, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         },
         logout() {
             this.$store.dispatch('AUTH_LOGOUT');
         },
     },
-    mounted() {
-        console.log(localStorage.getItem('todoist-token'));
-    },
+    // mounted() {},
 });
 </script>
 

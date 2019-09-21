@@ -20,23 +20,30 @@ export default {
     },
     actions: {
         USER_REQUEST({ commit, dispatch }: any) {
-            commit('USER_REQUEST');
+            if (localStorage.getItem('todoist-token')) {
+                return new Promise((resolve, reject) => {
+                    commit('USER_REQUEST');
 
-            const xhr = new XMLHttpRequest();
-            xhr.onload = () => {
-                commit('USER_SUCCESS');
-                console.log(xhr.response);
-            };
+                    const xhr = new XMLHttpRequest();
+                    xhr.onload = () => {
+                        commit('USER_SUCCESS');
+                        resolve(xhr.response);
+                    };
 
-            xhr.onerror = () => {
-                commit('USER_ERROR');
-                // dispatch('AUTH_LOGOUT');
-            };
-            xhr.open('GET', process.env.VUE_APP_BACKEND + '/api/users/me');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.setRequestHeader('x-access-token', localStorage.getItem('todoist-token') as string);
+                    xhr.onerror = () => {
+                        commit('USER_ERROR');
+                        reject(xhr.response);
+                        dispatch('AUTH_LOGOUT');
+                    };
+                    xhr.open('GET', process.env.VUE_APP_BACKEND + '/api/users/me');
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.setRequestHeader('x-access-token', localStorage.getItem(
+                        'todoist-token',
+                    ) as string);
 
-            xhr.send();
+                    xhr.send();
+                });
+            }
         },
     },
     getters: {},

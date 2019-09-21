@@ -32,7 +32,6 @@
             @keyup.enter="addTodo"
             placeholder="add todo"
         />
-
         <br />
         <br />
         <br />
@@ -40,6 +39,7 @@
         <div class="">
             <button type="button" name="button" @click="deleteAllTodos">delete all</button>
         </div>
+        <!-- <login></login> -->
     </div>
 </template>
 
@@ -47,30 +47,32 @@
 import Vue from 'vue';
 import axios from 'axios';
 var querystring = require('querystring');
+import Login from '@/views/Login.vue';
 
 export default Vue.extend({
     name: 'home',
-    components: {},
+    components: { Login },
     data() {
         return {
             todo: {
                 task: '',
                 status: false,
             },
+            // TODO: create typescript Todo class
             todos: [] as Object[],
         };
     },
     methods: {
         addTodo() {
-            let test = querystring.stringify({
+            const todoToSend = querystring.stringify({
                 task: this.todo.task,
                 status: false,
             });
-            console.log(typeof test);
             axios
-                .post(process.env.VUE_APP_BACKEND + '/api/todos', test, {
+                .post(process.env.VUE_APP_BACKEND + '/api/todos', todoToSend, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
+                        Authorization: localStorage.getItem('todoist-token') as string,
                     },
                 })
                 .then(() => {
@@ -78,18 +80,20 @@ export default Vue.extend({
                 });
         },
         getTodos() {
-            axios
-                .get(process.env.VUE_APP_BACKEND + '/api/todos', {
-                    headers: {
-                        'x-access-token': localStorage.getItem('todoist-token'),
-                    },
-                })
-                .then((res) => {
-                    this.todos = res.data;
-                })
-                .catch((err) => {
-                    throw err;
-                });
+            if (this.$store.getters.isAuthenticated) {
+                axios
+                    .get(process.env.VUE_APP_BACKEND + '/api/todos', {
+                        headers: {
+                            Authorization: localStorage.getItem('todoist-token') as string,
+                        },
+                    })
+                    .then((resp) => {
+                        this.todos = resp.data;
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            }
         },
         deleteAllTodos() {
             axios.delete(process.env.VUE_APP_BACKEND + '/api/todos').then(() => {

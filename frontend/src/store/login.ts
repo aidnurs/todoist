@@ -1,4 +1,5 @@
 import querystring from 'querystring';
+import router from '@/router';
 
 export default {
     state: {
@@ -34,13 +35,13 @@ export default {
                 const xhr = new XMLHttpRequest();
                 xhr.onload = () => {
                     const resp = JSON.parse(xhr.response);
-                    localStorage.setItem('todoist-token', resp.token); // store the token in localstorage
+                    localStorage.setItem('todoist-token', resp.token);
                     commit('AUTH_SUCCESS', resp.token);
                     resolve(resp.token);
                 };
 
                 xhr.onerror = () => {
-                    reject();
+                    reject(xhr.response);
                 };
 
                 xhr.open('POST', process.env.VUE_APP_BACKEND + '/api/users/login');
@@ -52,7 +53,7 @@ export default {
         AUTH_LOGOUT({ commit, dispatch }: any) {
             return new Promise((resolve, reject) => {
                 commit('AUTH_LOGOUT');
-                localStorage.removeItem('user-token'); // clear your user's token from localstorage
+                localStorage.removeItem('todoist-token'); // clear your user's token from localstorage
                 resolve();
             });
         },
