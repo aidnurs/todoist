@@ -13,6 +13,7 @@ const User = require('./models/user.model');
 const config = require('config');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 //use config module to get the privatekey, if no private key set, end the application
 if (!config.get('myprivatekey')) {
@@ -23,12 +24,7 @@ if (!config.get('myprivatekey')) {
 /**
  * CORS
  */
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    next();
-});
+app.use(cors({ exposedHeaders: ['Authorization'] }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
