@@ -19,12 +19,12 @@ router.get('/', auth, (req, res) => {
 
 router.get('/me', auth, (req, res) => {
     User.findById(req.user._id)
-        .select('-password')
+        .select('-password -todos')
         .exec((err, user) => {
             if (err) {
                 return res.status(400).send(error.details[0].message);
             }
-            res.json(req.user._id);
+            res.json(user);
         });
 });
 
