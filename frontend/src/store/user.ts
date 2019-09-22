@@ -32,7 +32,7 @@ export default {
                             },
                         })
                         .then((resp) => {
-                            commit('USER_SUCCESS');
+                            commit('USER_SUCCESS', resp.data);
                             resolve(resp);
                         })
                         .catch((err) => {

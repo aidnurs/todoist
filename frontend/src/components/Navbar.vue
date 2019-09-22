@@ -37,11 +37,10 @@
                             aria-haspopup="true"
                             aria-expanded="false"
                         >
-                            User
+                            {{ this.$store.state.user.profile.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <router-link class="dropdown-item" to="/">Action</router-link>
-                            <router-link class="dropdown-item" to="/">Action</router-link>
+                            <router-link class="dropdown-item disabled" to="/">Profile</router-link>
                             <div class="dropdown-divider"></div>
                             <button
                                 type="button"

@@ -1,5 +1,19 @@
 <template>
     <div class="home">
+        <h1>Welcome to Todoist App</h1>
+        <p>
+            here you can manage your life with daily todos
+        </p>
+        <blockquote class="blockquote text-center">
+            <p class="mb-0">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
+                ante.
+            </p>
+            <footer class="blockquote-footer">
+                Someone famous in <cite title="Source Title">Source Title</cite>
+            </footer>
+        </blockquote>
+
         <div class="" v-for="todo in this.todos">
             <input type="checkbox" name="" value="" />
             <span>
