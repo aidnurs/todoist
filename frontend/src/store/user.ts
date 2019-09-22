@@ -1,5 +1,6 @@
-import querystring from 'querystring';
+// import querystring from 'querystring';
 import Vue from 'vue';
+import axios from 'axios';
 
 export default {
     state: {
@@ -24,24 +25,21 @@ export default {
                 return new Promise((resolve, reject) => {
                     commit('USER_REQUEST');
 
-                    const xhr = new XMLHttpRequest();
-                    xhr.onload = () => {
-                        commit('USER_SUCCESS');
-                        resolve(xhr.response);
-                    };
-
-                    xhr.onerror = () => {
-                        commit('USER_ERROR');
-                        reject(xhr.response);
-                        dispatch('AUTH_LOGOUT');
-                    };
-                    xhr.open('GET', process.env.VUE_APP_BACKEND + '/api/users/me');
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    xhr.setRequestHeader('x-access-token', localStorage.getItem(
-                        'todoist-token',
-                    ) as string);
-
-                    xhr.send();
+                    axios
+                        .get(process.env.VUE_APP_BACKEND + '/api/users/me', {
+                            headers: {
+                                Authorization: localStorage.getItem('todoist-token') as string,
+                            },
+                        })
+                        .then((resp) => {
+                            commit('USER_SUCCESS');
+                            resolve(resp);
+                        })
+                        .catch((err) => {
+                            commit('USER_ERROR');
+                            reject(err);
+                            dispatch('AUTH_LOGOUT');
+                        });
                 });
             }
         },

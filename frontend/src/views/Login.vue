@@ -1,50 +1,39 @@
 <template lang="html">
     <div class="">
-        <br />
-        <b-form
-            inline
+        <form
             class="justify-content-center"
             @submit.prevent="onSubmit"
             v-if="!this.$store.getters.isAuthenticated"
+            method="post"
         >
-            <label class="sr-only" for="inline-form-input-name">Name</label>
-            <b-input
-                id="inline-form-input-name"
-                class="mb-2 mr-sm-2 mb-sm-0"
-                placeholder="Username"
-                v-model="user.username"
-            ></b-input>
-
-            <label class="sr-only" for="inline-form-input-username">Username</label>
-            <b-input-group class="mb-2 mr-sm-2 mb-sm-0">
-                <b-input
-                    id="inline-form-input-username"
+            <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputEmail1"
+                    aria-describedby="emailHelp"
+                    placeholder="Username"
+                    v-model="user.username"
+                />
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="exampleInputPassword1"
                     placeholder="Password"
                     v-model="user.password"
-                ></b-input>
-            </b-input-group>
-
-            <!-- <b-form-checkbox class="mb-2 mr-sm-2 mb-sm-0">Remember me</b-form-checkbox> -->
-
-            <b-button type="submit" variant="primary">Login</b-button>
-        </b-form>
-        <div class="">
-            {{ this.$store.state.login.token }}
+                />
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div class="" v-else>
+            <button @click="logout" class="btn btn-primary" type="button" name="button">
+                Logout
+            </button>
         </div>
-        <button
-            type="button"
-            name="button"
-            @click="logout"
-            v-if="this.$store.getters.isAuthenticated"
-        >
-            logout
-        </button>
-        <!-- <form @submit.prevent="registerNewUser" class="" method="post">
-            <label for="username" required>username</label>
-            <input type="text" name="username" value="" v-model="user.username" />
-            <br />
-            <button type="submit" name="button">Register</button>
-        </form> -->
     </div>
 </template>
 
@@ -64,7 +53,12 @@ export default Vue.extend({
     },
     methods: {
         onSubmit() {
-            this.$store.dispatch('AUTH_REQUEST', this.user);
+            this.$store
+                .dispatch('AUTH_REQUEST', this.user)
+                .then((resp) => {})
+                .catch((err) => {
+                    throw err;
+                });
         },
         registerNewUser() {
             const data = querystring.stringify(this.user);

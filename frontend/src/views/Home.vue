@@ -1,44 +1,31 @@
 <template>
     <div class="home">
-        <ul>
-            <li>
-                <input type="checkbox" name="" value="" />
-                <span>
-                    task1
-                </span>
-            </li>
+        <div class="" v-for="todo in this.todos">
+            <input type="checkbox" name="" value="" />
+            <span>
+                {{ todo.task }}
+            </span>
             <hr />
-            <li>
-                <input type="checkbox" name="" value="" />
-                <span>
-                    task1
-                </span>
-            </li>
-            <hr />
-        </ul>
-        <ul>
-            <li v-for="todo in this.todos">
-                <p>
-                    {{ todo.task }}
-                </p>
-            </li>
-        </ul>
+        </div>
 
-        <input
-            type="text"
-            name=""
-            value=""
-            v-model="todo.task"
-            @keyup.enter="addTodo"
-            placeholder="add todo"
-        />
-        <br />
-        <br />
-        <br />
+        <form>
+            <div class="form-group">
+                <!-- <label for="formGroupExampleInput2">Add Todo</label> -->
+                <input
+                    type="text"
+                    class="form-control"
+                    id="formGroupExampleInput2"
+                    v-model="todo.task"
+                    placeholder="add todo"
+                    @keyup.enter="addTodo"
+                />
+            </div>
+        </form>
         <br />
         <div class="">
             <button type="button" name="button" @click="deleteAllTodos">delete all</button>
         </div>
+
         <!-- <login></login> -->
     </div>
 </template>
@@ -75,8 +62,13 @@ export default Vue.extend({
                         Authorization: localStorage.getItem('todoist-token') as string,
                     },
                 })
-                .then(() => {
+                .then((resp) => {
                     this.getTodos();
+                    this.todo.task = '';
+                    this.todo.status = false;
+                })
+                .catch((err) => {
+                    throw err;
                 });
         },
         getTodos() {
